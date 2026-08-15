@@ -27,3 +27,5 @@ Tables (dependency order, matching the `db/schema/NNN_*.sql` filenames): `organi
 
 Every `_id` foreign key column is `NOT NULL` + indexed + constrained, except `risk_categories.organization_id` (nullable — a `NULL` org means the category is global/shared, not org-scoped).
 
+`risk_categories`/`contexts` are seeded with global (`organization_id NULL`) defaults by `scripts/populate-categories.ts`, run automatically after `db:migrate` via the root `predev`/`prestart` hooks (also callable directly as `npm run db:seed-global`). Only seeds a table if it's currently empty — safe to run repeatedly.
+
