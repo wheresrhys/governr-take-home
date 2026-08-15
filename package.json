@@ -10,7 +10,8 @@
     "start": "next start",
     "lint": "eslint",
     "db:migrate": "node db/apply-schema.js",
-    "db:seed-global": "tsx scripts/populate-categories.ts"
+    "db:seed-global": "tsx scripts/populate-categories.ts",
+    "db:typegen": "pg-to-ts generate -c \"${DATABASE_URL:-postgresql://postgres:postgres@localhost:5433/governr}\" -o types/postgres.d.ts"
   },
   "dependencies": {
     "next": "16.3.1",
@@ -26,6 +27,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.1",
+    "pg-to-ts": "^4.1.1",
     "tailwindcss": "^4",
     "tsx": "^4.23.12",
     "typescript": "^5"
