@@ -80,7 +80,7 @@ export function AddModelForm({
     );
   }
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const model = {
@@ -93,7 +93,17 @@ export function AddModelForm({
       })),
     };
 
-    console.log(model);
+    const response = await fetch("/api/add-model", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(model),
+    });
+
+    if (response.ok) {
+      window.location.href = "/";
+    } else {
+      alert("oops - failed to create model record");
+    }
   }
 
   return (

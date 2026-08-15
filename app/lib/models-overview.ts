@@ -24,6 +24,7 @@ const SEVERITY_WEIGHT: Record<Severity, number> = {
 };
 
 export function buildModelsOverview(rows: ModelRiskFlatRow[]): ModelOverviewRow[] {
+
   const byModel = new Map<
     number,
     { name: string; ownerName: string; riskPairings: ModelRiskPairing[] }
