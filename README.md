@@ -1,22 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This project has three parts: a [Next.js](https://nextjs.org) app (bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app)), a `risk-scoring` Express service (`services/risk-scoring/`), and a Postgres database.
 
 ## Getting Started
 
-First, run the development server:
+The easiest way to run everything is via Docker Compose — it starts all three services in parallel with hot reload:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+docker compose up --build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Next.js app: [http://localhost:3000](http://localhost:3000)
+- risk-scoring service: [http://localhost:4000](http://localhost:4000)
+- Postgres: `localhost:5433` (user/pass `postgres`, db `governr`)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Edit `app/page.tsx` or `services/risk-scoring/index.ts` and the running containers pick up the change automatically.
+
+### Running without Docker
+
+Each part can also run standalone with Node 22+:
+
+```bash
+# Next.js app
+npm install
+npm run dev
+
+# risk-scoring service (separate terminal)
+cd services/risk-scoring
+npm install
+npm run dev
+```
+
+You'll need your own Postgres instance running if you go this route — Docker Compose is the simpler path.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
