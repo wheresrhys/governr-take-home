@@ -58,7 +58,17 @@ app.post("/assess-risk", requireAuth, async (req, res) => {
     return;
   }
 
-  res.status(200).json({ received: true });
+  const severityScores: Record<AssessRiskPayload["risks"][number]["severity"], number> = {
+    HIGH: 100,
+    MODERATE: 10,
+    LOW: 1,
+  };
+  const aggregateRiskScore = payload.risks.reduce(
+    (total, risk) => total + severityScores[risk.severity],
+    0
+  );
+
+  res.status(200).json({ model: payload.model, aggregateRiskScore });
 });
 
 export default app;
