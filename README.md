@@ -17,6 +17,8 @@ Finally, if introducing RLS I have a stronger preference for allowing access dec
 4. Aggregate risk score algorithm
 `POST /assess-risk` sums each risk's severity into a single `aggregateRiskScore`: 100 per HIGH, 10 per MODERATE, 1 per LOW. Risk severities intuitively feel like order-of-magnitude categories rather than a linear scale, so this algorithm was chosen as a naive way to express that: lots of small (LOW) risks add up to a severity comparable to one large (HIGH) risk.
 
+5. I wasn't sure if a category + context + model combination could exist multiple times with multiple severities. It feels to me like they should not be allowed to do so, therefore I added a uniqueness constraint on the table based on those 3 columns.
+
 ## Getting Started
 
 The easiest way to run everything is via Docker Compose — it starts all three services in parallel with hot reload:
