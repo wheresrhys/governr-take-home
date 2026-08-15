@@ -29,3 +29,5 @@ Every `_id` foreign key column is `NOT NULL` + indexed + constrained, except `ri
 
 `risk_categories`/`contexts` are seeded with global (`organization_id NULL`) defaults by `scripts/populate-categories.ts`, run automatically after `db:migrate` via the root `predev`/`prestart` hooks (also callable directly as `npm run db:seed-global`). Only seeds a table if it's currently empty — safe to run repeatedly.
 
+TypeScript row types for every table are generated from the live schema (via `pg-to-ts`) into `types/postgres.d.ts`. Unlike `db:migrate`/`db:seed-global`, this is **not** wired into `predev`/`prestart` — the generated file is committed to git, so run `npm run db:typegen` manually against a running db whenever `db/schema/` changes and commit the diff.
+
