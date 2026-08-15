@@ -9,6 +9,7 @@
     "prestart": "npm run db:migrate && npm run db:seed-global",
     "start": "next start",
     "lint": "eslint",
+    "test": "vitest run",
     "db:migrate": "node db/apply-schema.js",
     "db:rebuild": "node db/drop-schema.js && npm run db:migrate && npm run db:seed-global && npm run db:seed-demo",
     "db:seed-global": "tsx scripts/populate-categories.ts",
@@ -27,11 +28,14 @@
     "@types/pg": "^8.21.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/supertest": "^6.0.2",
     "eslint": "^9",
     "eslint-config-next": "16.3.1",
     "pg-to-ts": "^4.1.1",
+    "supertest": "^7.0.0",
     "tailwindcss": "^4",
     "tsx": "^4.23.12",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^3.0.0"
   }
 }

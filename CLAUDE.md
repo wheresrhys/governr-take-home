@@ -5,7 +5,7 @@
 Small multi-service app, orchestrated locally via `docker-compose.yml`:
 
 - **`app/`** — Next.js app (root `package.json`). Main product UI.
-- **`services/<name>/`** — standalone Node/Express microservices, each with its own `package.json`, `tsconfig.json`, and `Dockerfile`. Currently just `risk-scoring` (hello-world stub). Not part of the root npm workspace — each service manages its own deps.
+- **`services/<name>/`** — standalone Node/Express microservices, each with its own `package.json`, `tsconfig.json`, and `Dockerfile`. Currently just `risk-scoring` (`POST /assess-risk` — ajv-validated, 400 on shape mismatch; see `services/risk-scoring/schemas/`). Not part of the root npm workspace — each service manages its own runtime deps.
 - **`db/schema/`** — Postgres schema as numbered, recreate-safe SQL files (no ORM wired up; raw SQL). Applied in order by `db/apply-schema.js`, run automatically via the root `predev`/`prestart` npm hooks (also callable directly as `npm run db:migrate`).
 
 ## Local dev services
@@ -20,6 +20,10 @@ Services reach the db over the compose network at `db:5432` (see `DATABASE_URL` 
 ### Adding a new service
 
 Copy the `services/risk-scoring` pattern: own `package.json`/`tsconfig.json`/`Dockerfile`, then add a service block to `docker-compose.yml` (bind mount + anonymous `node_modules` volume, per existing services).
+
+### Testing
+
+Single root-level Vitest config (`vitest.config.ts`) covers the whole repo, including `services/*/__tests__/`. `vitest`/`supertest` live in the root `package.json` devDependencies (not per-service) since they're dev-time only; run everything with `npm run test` from repo root. A service's own runtime deps (e.g. `risk-scoring`'s `ajv`) still live in that service's own `package.json` since they ship in its Docker image.
 
 ### Database schema
 
