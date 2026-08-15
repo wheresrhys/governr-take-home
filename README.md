@@ -22,6 +22,16 @@ Edit `app/page.tsx` or `services/risk-scoring/index.ts` and the running containe
 npm run db:migrate
 ```
 
+#### Demo data
+
+After `docker compose up`, if you want some sample organisations to explore the app with, run:
+
+```bash
+npm run db:seed-demo
+```
+
+This creates 2 demo organisations, each with 2 owners, 2 org-scoped risk categories, 2 org-scoped contexts, 4 models, and 4 model risks per model. Safe to run repeatedly — it skips any org whose name is already seeded.
+
 #### Schema design calls
 
 1. Global vs per user categories & contexts
