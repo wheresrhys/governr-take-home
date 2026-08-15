@@ -3,13 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "predev": "npm run db:migrate",
+    "predev": "npm run db:migrate && npm run db:seed-global",
     "dev": "next dev",
     "build": "next build",
-    "prestart": "npm run db:migrate",
+    "prestart": "npm run db:migrate && npm run db:seed-global",
     "start": "next start",
     "lint": "eslint",
-    "db:migrate": "node db/apply-schema.js"
+    "db:migrate": "node db/apply-schema.js",
+    "db:seed-global": "tsx scripts/populate-categories.ts"
   },
   "dependencies": {
     "next": "16.3.1",
@@ -20,11 +21,13 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/pg": "^8.21.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.1",
     "tailwindcss": "^4",
+    "tsx": "^4.23.12",
     "typescript": "^5"
   }
 }
