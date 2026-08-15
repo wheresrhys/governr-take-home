@@ -19,6 +19,8 @@ Finally, if introducing RLS I have a stronger preference for allowing access dec
 
 5. I wasn't sure if a category + context + model combination could exist multiple times with multiple severities. It feels to me like they should not be allowed to do so, therefore I added a uniqueness constraint on the table based on those 3 columns.
 
+6. I decided to fail hard if any risk categories or contexts were unrecognised. Potentially continuing to process any good items and warning about e.g. 2 failyre sout of 5 woudl be more appropriate behaviour, but without any additional context I think the sensible thing to do is to fail early and hard in order to avoid building up inconsitent state, which can be very difficult to fix later.
+
 ## Getting Started
 
 The easiest way to run everything is via Docker Compose — it starts all three services in parallel with hot reload:
