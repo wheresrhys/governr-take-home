@@ -5,7 +5,7 @@
 Small multi-service app, orchestrated locally via `docker-compose.yml`:
 
 - **`app/`** — Next.js app (root `package.json`). Main product UI.
-- **`services/<name>/`** — standalone Node/Express microservices, each with its own `package.json`, `tsconfig.json`, and `Dockerfile`. Currently just `risk-scoring` (`POST /assess-risk` — ajv-validated, 400 on shape mismatch; see `services/risk-scoring/schemas/`). Not part of the root npm workspace — each service manages its own runtime deps.
+- **`services/<name>/`** — standalone Node/Express microservices, each with its own `package.json`, `tsconfig.json`, and `Dockerfile`. Currently just `risk-scoring` (`POST /assess-risk` — ajv-validated, 400 on shape mismatch; see `services/risk-scoring/schemas/`). Not part of the root npm workspace — each service manages its own runtime deps (e.g. its own `pg`, separate from root's). `services/risk-scoring/lib/postgres.ts` holds a shared `pg.Pool` plus `getItems<T>(tableName, orgId)`, fetching rows where `org_id IS NULL OR org_id = $1`; throws `InvalidInputError` on missing/invalid `tableName`/`orgId`.
 - **`db/schema/`** — Postgres schema as numbered, recreate-safe SQL files (no ORM wired up; raw SQL). Applied in order by `db/apply-schema.js`, run automatically via the root `predev`/`prestart` npm hooks (also callable directly as `npm run db:migrate`).
 
 ## Local dev services
