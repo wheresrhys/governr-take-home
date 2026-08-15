@@ -11,7 +11,8 @@ CREATE TABLE IF NOT EXISTS model_risks (
   model_id INTEGER NOT NULL REFERENCES models (id),
   risk_category_id INTEGER NOT NULL REFERENCES risk_categories (id),
   context_id INTEGER NOT NULL REFERENCES contexts (id),
-  severity risk_severity NOT NULL
+  severity risk_severity NOT NULL,
+  UNIQUE (model_id, risk_category_id, context_id)
 );
 
 CREATE INDEX IF NOT EXISTS idx_model_risks_model_id ON model_risks (model_id);
