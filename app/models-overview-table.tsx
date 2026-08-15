@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { scoreColor, severityColor } from "@/app/lib/severity-styles";
-import type { ModelOverviewRow } from "@/app/models-overview-mock-data";
+import type { ModelOverviewRow } from "@/app/lib/models-overview";
 
 type Props = {
   models: ModelOverviewRow[];
@@ -53,6 +53,12 @@ export function ModelsOverviewTable({ models }: Props) {
             scope="col"
             className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-zinc-500"
           >
+            Owner name
+          </th>
+          <th
+            scope="col"
+            className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-zinc-500"
+          >
             Risk categories
           </th>
           <th
@@ -81,6 +87,9 @@ export function ModelsOverviewTable({ models }: Props) {
             <tr key={model.id}>
               <td className="px-4 py-3 text-sm font-medium text-zinc-900">
                 {model.name}
+              </td>
+              <td className="px-4 py-3 text-sm text-zinc-700">
+                {model.ownerName}
               </td>
               <td className="px-4 py-3 text-sm text-zinc-700">
                 {model.riskCategories.join(", ")}
@@ -128,6 +137,7 @@ export function ModelsOverviewTable({ models }: Props) {
                 <td className="border-l-2 border-zinc-300 py-2 pl-10 pr-4 text-sm text-zinc-500">
                   &#8627;
                 </td>
+                <td className="py-2 pl-4 pr-4" />
                 <td className="py-2 pl-4 pr-4 text-sm text-zinc-700">
                   {pairing.riskCategory}
                 </td>
