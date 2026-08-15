@@ -75,6 +75,29 @@ describe("POST /assess-risk", () => {
     expect(response.body.message).toContain("Not A Real Context");
   });
 
+  it("returns aggregateRiskScore summing 100 per high, 10 per moderate, 1 per low risk", async () => {
+    const response = await request(app)
+      .post("/assess-risk")
+      .set("Authorization", "Bearer test-token")
+      .send({
+        model: { id: 1, name: "test-model" },
+        risks: [
+          { risk_category: "Bias", context: "Production", severity: "HIGH" },
+          { risk_category: "Bias", context: "Production", severity: "MODERATE" },
+          { risk_category: "Bias", context: "Production", severity: "MODERATE" },
+          { risk_category: "Bias", context: "Production", severity: "LOW" },
+          { risk_category: "Bias", context: "Production", severity: "LOW" },
+          { risk_category: "Bias", context: "Production", severity: "LOW" },
+        ],
+      });
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({
+      model: { id: 1, name: "test-model" },
+      aggregateRiskScore: 123,
+    });
+  });
+
   it("returns 502 when a db call fails", async () => {
     getItemsMock.mockRejectedValue(new Error("connection refused"));
 
