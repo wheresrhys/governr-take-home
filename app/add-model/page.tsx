@@ -16,13 +16,46 @@ type RiskRow = {
   severity: Severity;
 };
 
+const fieldClassName =
+  "block w-full rounded-md border border-zinc-300 px-3 py-2 text-sm text-zinc-900 shadow-sm focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500";
+
+function Select({
+  id,
+  name,
+  value,
+  onChange,
+  options,
+}: {
+  id: string;
+  name: string;
+  value: string;
+  onChange: (value: string) => void;
+  options: { value: string; label: string }[];
+}) {
+  return (
+    <select
+      id={id}
+      name={name}
+      value={value}
+      onChange={(event) => onChange(event.target.value)}
+      className={fieldClassName}
+    >
+      {options.map((option) => (
+        <option key={option.value} value={option.value}>
+          {option.label}
+        </option>
+      ))}
+    </select>
+  );
+}
+
 let nextRiskRowId = 1;
 
 function createRiskRow(): RiskRow {
   return {
     id: nextRiskRowId++,
-    riskCategory: RISK_CATEGORY_OPTIONS[0],
-    context: DEPLOYMENT_CONTEXT_OPTIONS[0],
+    riskCategory: RISK_CATEGORY_OPTIONS[0].value,
+    context: DEPLOYMENT_CONTEXT_OPTIONS[0].value,
     severity: SEVERITY_OPTIONS[0].value,
   };
 }
@@ -65,7 +98,7 @@ export default function AddModelPage() {
             value={modelName}
             onChange={(event) => setModelName(event.target.value)}
             required
-            className="block w-full rounded-md border border-zinc-300 px-3 py-2 text-sm text-zinc-900 shadow-sm focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500"
+            className={fieldClassName}
           />
         </div>
 
@@ -83,55 +116,33 @@ export default function AddModelPage() {
           <div className="space-y-3">
             {riskRows.map((row) => (
               <div key={row.id} className="grid grid-cols-3 items-center gap-3">
-                <select
+                <Select
                   id={`risk-category-${row.id}`}
                   name={`risk-category-${row.id}`}
                   value={row.riskCategory}
-                  onChange={(event) =>
-                    updateRiskRow(row.id, { riskCategory: event.target.value })
+                  onChange={(value) =>
+                    updateRiskRow(row.id, { riskCategory: value })
                   }
-                  className="block w-full rounded-md border border-zinc-300 px-3 py-2 text-sm text-zinc-900 shadow-sm focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500"
-                >
-                  {RISK_CATEGORY_OPTIONS.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
+                  options={RISK_CATEGORY_OPTIONS}
+                />
 
-                <select
+                <Select
                   id={`deployment-context-${row.id}`}
                   name={`deployment-context-${row.id}`}
                   value={row.context}
-                  onChange={(event) =>
-                    updateRiskRow(row.id, { context: event.target.value })
-                  }
-                  className="block w-full rounded-md border border-zinc-300 px-3 py-2 text-sm text-zinc-900 shadow-sm focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500"
-                >
-                  {DEPLOYMENT_CONTEXT_OPTIONS.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
+                  onChange={(value) => updateRiskRow(row.id, { context: value })}
+                  options={DEPLOYMENT_CONTEXT_OPTIONS}
+                />
 
-                <select
+                <Select
                   id={`risk-severity-${row.id}`}
                   name={`risk-severity-${row.id}`}
                   value={row.severity}
-                  onChange={(event) =>
-                    updateRiskRow(row.id, {
-                      severity: event.target.value as Severity,
-                    })
+                  onChange={(value) =>
+                    updateRiskRow(row.id, { severity: value as Severity })
                   }
-                  className="block w-full rounded-md border border-zinc-300 px-3 py-2 text-sm text-zinc-900 shadow-sm focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500"
-                >
-                  {SEVERITY_OPTIONS.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
+                  options={SEVERITY_OPTIONS}
+                />
               </div>
             ))}
           </div>
