@@ -14,6 +14,14 @@ docker compose up --build
 
 Edit `app/page.tsx` or `services/risk-scoring/index.ts` and the running containers pick up the change automatically.
 
+### Database schema
+
+`db/schema/` holds the Postgres schema as numbered, recreate-safe SQL files (`CREATE TABLE IF NOT EXISTS`, etc.), applied in order by `db/apply-schema.js`. It runs automatically before `npm run dev`/`npm run start` (via `predev`/`prestart`), so the `web` container's `docker compose up` picks it up with no manual step — it retries the connection for a few seconds in case Postgres isn't accepting connections yet. To apply/re-apply it manually:
+
+```bash
+npm run db:migrate
+```
+
 ### Running without Docker
 
 Each part can also run standalone with Node 22+:

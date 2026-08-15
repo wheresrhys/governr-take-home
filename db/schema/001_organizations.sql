@@ -1,0 +1,5 @@
+-- Customers of Governr.
+CREATE TABLE IF NOT EXISTS organizations (
+  id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  name TEXT NOT NULL
+);
