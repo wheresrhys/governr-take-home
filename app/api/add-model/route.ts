@@ -1,13 +1,20 @@
 import { NextResponse } from "next/server";
+import { requireAuth } from "@/app/api/middleware/auth";
 import { createModelWithRisks, CreateModelPayload } from "@/app/lib/postgres";
 
 export async function POST(request: Request) {
+  const auth = await requireAuth(request);
+  if (auth instanceof NextResponse) {
+    return auth;
+  }
+
   try {
-    const { orgId, userId, ...modelPayload } = (await request.json()) as CreateModelPayload & {
-      orgId: number;
-      userId: number;
-    };
-    const model = await createModelWithRisks(modelPayload, orgId, userId);
+    const modelPayload = (await request.json()) as CreateModelPayload;
+    const model = await createModelWithRisks(
+      modelPayload,
+      auth.org_id,
+      auth.user_id
+    );
     console.log("Model created successfully", { model });
     return NextResponse.json({ modelId: model.id });
   } catch (error) {
