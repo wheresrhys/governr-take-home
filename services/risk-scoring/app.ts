@@ -21,8 +21,8 @@ app.post("/assess-risk", requireAuth, async (req, res) => {
     return;
   }
 
-  const { org_id } = req.auth!;
   const payload = req.body as AssessRiskPayload;
+  const { org_id } = payload;
 
   let riskCategories: RiskCategories[];
   let contexts: Contexts[];

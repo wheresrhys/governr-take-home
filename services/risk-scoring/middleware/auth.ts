@@ -5,7 +5,6 @@ declare global {
     interface Request {
       auth?: {
         user_id: number;
-        org_id: number;
       };
     }
   }
@@ -13,16 +12,18 @@ declare global {
 
 export class AuthError extends Error {}
 
-// Stubbed OAuth check. Real implementation would validate the token against
+// Stubbed API key check. Real implementation would validate the key against
 // an auth provider; for now any truthy header value is treated as valid.
-export async function oauth(
-  authHeader: string | undefined
-): Promise<{ user_id: number; org_id: number }> {
-  if (!authHeader) {
-    throw new AuthError("Missing auth header");
+// org_id is no longer derived from auth here — callers scope queries using
+// org_id from the request payload instead (see app.ts).
+export async function apiKey(
+  apiKeyHeader: string | undefined
+): Promise<{ user_id: number }> {
+  if (!apiKeyHeader) {
+    throw new AuthError("Missing API key header");
   }
 
-  return { user_id: 1, org_id: 1 };
+  return { user_id: 1 };
 }
 
 export async function requireAuth(
@@ -31,8 +32,8 @@ export async function requireAuth(
   next: NextFunction
 ) {
   try {
-    const { user_id, org_id } = await oauth(req.headers.authorization);
-    req.auth = { user_id, org_id };
+    const { user_id } = await apiKey(req.headers["x-api-key"] as string | undefined);
+    req.auth = { user_id };
     next();
   } catch (err) {
     res.status(401).json({ error: "Unauthorized" });

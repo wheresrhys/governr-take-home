@@ -11,6 +11,7 @@ const RISK_CATEGORIES = [{ id: 1, name: "Bias", org_id: null }];
 const CONTEXTS = [{ id: 1, name: "Production", org_id: null }];
 
 const validPayload = {
+  org_id: 1,
   model: { id: 1, name: "test-model" },
   risks: [{ risk_category: "Bias", context: "Production", severity: "LOW" }],
 };
@@ -26,7 +27,7 @@ describe("POST /assess-risk", () => {
   it("returns 400 when the payload doesn't match the expected shape", async () => {
     const response = await request(app)
       .post("/assess-risk")
-      .set("Authorization", "Bearer test-token")
+      .set("x-api-key", "test-key")
       .send({ model: { id: 1, name: "test-model" } }); // missing `risks`
 
     expect(response.status).toBe(400);
@@ -43,7 +44,7 @@ describe("POST /assess-risk", () => {
   it("returns 200 when the payload references known categories and contexts", async () => {
     const response = await request(app)
       .post("/assess-risk")
-      .set("Authorization", "Bearer test-token")
+      .set("x-api-key", "test-key")
       .send(validPayload);
 
     expect(response.status).toBe(200);
@@ -52,7 +53,7 @@ describe("POST /assess-risk", () => {
   it("returns 400 listing the risk category when it doesn't exist in the DB", async () => {
     const response = await request(app)
       .post("/assess-risk")
-      .set("Authorization", "Bearer test-token")
+      .set("x-api-key", "test-key")
       .send({
         ...validPayload,
         risks: [{ risk_category: "Not A Real Category", context: "Production", severity: "LOW" }],
@@ -65,7 +66,7 @@ describe("POST /assess-risk", () => {
   it("returns 400 listing the context when it doesn't exist in the DB", async () => {
     const response = await request(app)
       .post("/assess-risk")
-      .set("Authorization", "Bearer test-token")
+      .set("x-api-key", "test-key")
       .send({
         ...validPayload,
         risks: [{ risk_category: "Bias", context: "Not A Real Context", severity: "LOW" }],
@@ -80,7 +81,7 @@ describe("POST /assess-risk", () => {
 
     const response = await request(app)
       .post("/assess-risk")
-      .set("Authorization", "Bearer test-token")
+      .set("x-api-key", "test-key")
       .send(validPayload);
 
     expect(response.status).toBe(502);
