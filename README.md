@@ -1,5 +1,19 @@
 This project has three parts: a [Next.js](https://nextjs.org) app (bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app)), a `risk-scoring` Express service (`services/risk-scoring/`), and a Postgres database.
 
+## Getting Started
+
+The easiest way to run everything is via Docker Compose — it starts all three services in parallel with hot reload:
+
+```bash
+docker compose up --build
+```
+
+- Next.js app: [http://localhost:3000](http://localhost:3000)
+- risk-scoring service: [http://localhost:4000](http://localhost:4000)
+- Postgres: `localhost:5433` (user/pass `postgres`, db `governr`)
+
+To populate with demo data run `npm i &&  npm run db:seed-demo` in another terminal
+
 ## Design decisions
 
 1. Global vs per user categories & contexts
@@ -21,19 +35,7 @@ Finally, if introducing RLS I have a stronger preference for allowing access dec
 
 6. I decided to fail hard if any risk categories or contexts were unrecognised in the risk scoring endpoint. Potentially continuing to process any good items and warning about e.g. 2 failyre sout of 5 woudl be more appropriate behaviour, but without any additional context I think the sensible thing to do is to fail early and hard in order to avoid building up inconsistent state, which can be very difficult to fix later.
 
-## Getting Started
 
-The easiest way to run everything is via Docker Compose — it starts all three services in parallel with hot reload:
-
-```bash
-docker compose up --build
-```
-
-- Next.js app: [http://localhost:3000](http://localhost:3000)
-- risk-scoring service: [http://localhost:4000](http://localhost:4000)
-- Postgres: `localhost:5433` (user/pass `postgres`, db `governr`)
-
-Edit `app/page.tsx` or `services/risk-scoring/index.ts` and the running containers pick up the change automatically.
 
 ### Database schema
 
