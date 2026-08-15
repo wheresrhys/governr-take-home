@@ -28,6 +28,7 @@ export default async function AddModelPage() {
 
   return (
     <AddModelForm
+      orgId={ORG_ID}
       riskCategoryOptions={riskCategoryOptions}
       contextOptions={contextOptions}
     />
