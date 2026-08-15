@@ -80,7 +80,7 @@ async function seedOrg(client: Client, org: DemoOrg) {
   const ownerIds: number[] = [];
   for (const owner of org.owners) {
     const { rows: [{ id }] } = await client.query(
-      "INSERT INTO owners (name, email, team, organization_id) VALUES ($1, $2, $3, $4) RETURNING id",
+      "INSERT INTO owners (name, email, team, org_id) VALUES ($1, $2, $3, $4) RETURNING id",
       [owner.name, owner.email, owner.team, organizationId]
     );
     ownerIds.push(id);
@@ -89,7 +89,7 @@ async function seedOrg(client: Client, org: DemoOrg) {
   const riskCategoryIds: number[] = [];
   for (const name of org.riskCategories) {
     const { rows: [{ id }] } = await client.query(
-      "INSERT INTO risk_categories (name, organization_id) VALUES ($1, $2) RETURNING id",
+      "INSERT INTO risk_categories (name, org_id) VALUES ($1, $2) RETURNING id",
       [name, organizationId]
     );
     riskCategoryIds.push(id);
@@ -98,7 +98,7 @@ async function seedOrg(client: Client, org: DemoOrg) {
   const contextIds: number[] = [];
   for (const name of org.contexts) {
     const { rows: [{ id }] } = await client.query(
-      "INSERT INTO contexts (name, organization_id) VALUES ($1, $2) RETURNING id",
+      "INSERT INTO contexts (name, org_id) VALUES ($1, $2) RETURNING id",
       [name, organizationId]
     );
     contextIds.push(id);
@@ -107,7 +107,7 @@ async function seedOrg(client: Client, org: DemoOrg) {
   for (const [index, name] of org.models.entries()) {
     const ownerId = ownerIds[index % ownerIds.length];
     const { rows: [{ id: modelId }] } = await client.query(
-      "INSERT INTO models (name, owner_id, organization_id) VALUES ($1, $2, $3) RETURNING id",
+      "INSERT INTO models (name, owner_id, org_id) VALUES ($1, $2, $3) RETURNING id",
       [name, ownerId, organizationId]
     );
 

@@ -25,9 +25,9 @@ Copy the `services/risk-scoring` pattern: own `package.json`/`tsconfig.json`/`Do
 
 Tables (dependency order, matching the `db/schema/NNN_*.sql` filenames): `organizations` → `owners`, `risk_categories`, `contexts` (all scoped to an org) → `models` (owned by an `owner`, scoped to an org) → `model_risks` (a model's risk severity per `risk_categories` × `contexts`) → `audit_log` (append-only; a trigger blocks `UPDATE`/`DELETE`).
 
-Every `_id` foreign key column is `NOT NULL` + indexed + constrained, except `risk_categories.organization_id` (nullable — a `NULL` org means the category is global/shared, not org-scoped).
+Every `_id` foreign key column is `NOT NULL` + indexed + constrained, except `risk_categories.org_id` (nullable — a `NULL` org means the category is global/shared, not org-scoped).
 
-`risk_categories`/`contexts` are seeded with global (`organization_id NULL`) defaults by `scripts/populate-categories.ts`, run automatically after `db:migrate` via the root `predev`/`prestart` hooks (also callable directly as `npm run db:seed-global`). Only seeds a table if it's currently empty — safe to run repeatedly.
+`risk_categories`/`contexts` are seeded with global (`org_id NULL`) defaults by `scripts/populate-categories.ts`, run automatically after `db:migrate` via the root `predev`/`prestart` hooks (also callable directly as `npm run db:seed-global`). Only seeds a table if it's currently empty — safe to run repeatedly.
 
 TypeScript row types for every table are generated from the live schema (via `pg-to-ts`) into `types/postgres.d.ts`. Unlike `db:migrate`/`db:seed-global`, this is **not** wired into `predev`/`prestart` — the generated file is committed to git, so run `npm run db:typegen` manually against a running db whenever `db/schema/` changes and commit the diff.
 

@@ -49,7 +49,7 @@ async function seedIfEmpty(client: Client, table: string, names: string[]) {
   }
   for (const name of names) {
     await client.query(
-      `INSERT INTO ${table} (name, organization_id) VALUES ($1, NULL)`,
+      `INSERT INTO ${table} (name, org_id) VALUES ($1, NULL)`,
       [name]
     );
   }

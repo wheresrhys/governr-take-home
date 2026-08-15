@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS owners (
   name TEXT NOT NULL,
   email TEXT NOT NULL,
   team TEXT NOT NULL,
-  organization_id INTEGER NOT NULL REFERENCES organizations (id)
+  org_id INTEGER NOT NULL REFERENCES organizations (id)
 );
 
-CREATE INDEX IF NOT EXISTS idx_owners_organization_id ON owners (organization_id);
+CREATE INDEX IF NOT EXISTS idx_owners_org_id ON owners (org_id);

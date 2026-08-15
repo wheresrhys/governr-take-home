@@ -47,19 +47,19 @@ const audit_log = {
 export interface Contexts {
 	id: number;
 	name: string;
-	organization_id: number | null;
+	org_id: number | null;
 }
 export interface ContextsInput {
 	id: number;
 	name: string;
-	organization_id?: number | null;
+	org_id?: number | null;
 }
 const contexts = {
 	tableName: 'contexts',
-	columns: ['id', 'name', 'organization_id'],
+	columns: ['id', 'name', 'org_id'],
 	requiredForInsert: ['id', 'name'],
 	primaryKey: 'id',
-	foreignKeys: { organization_id: { table: 'organizations', column: 'id', $type: null as unknown as Organizations }, },
+	foreignKeys: { org_id: { table: 'organizations', column: 'id', $type: null as unknown as Organizations }, },
 	$type: null as unknown as Contexts,
 	$input: null as unknown as ContextsInput
 } as const;
@@ -98,22 +98,22 @@ export interface Models {
 	id: number;
 	name: string;
 	owner_id: number;
-	organization_id: number;
+	org_id: number;
 }
 export interface ModelsInput {
 	id: number;
 	name: string;
 	owner_id: number;
-	organization_id: number;
+	org_id: number;
 }
 const models = {
 	tableName: 'models',
-	columns: ['id', 'name', 'owner_id', 'organization_id'],
-	requiredForInsert: ['id', 'name', 'owner_id', 'organization_id'],
+	columns: ['id', 'name', 'owner_id', 'org_id'],
+	requiredForInsert: ['id', 'name', 'owner_id', 'org_id'],
 	primaryKey: 'id',
 	foreignKeys: {
 		owner_id: { table: 'owners', column: 'id', $type: null as unknown as Owners },
-		organization_id: { table: 'organizations', column: 'id', $type: null as unknown as Organizations },
+		org_id: { table: 'organizations', column: 'id', $type: null as unknown as Organizations },
 	},
 	$type: null as unknown as Models,
 	$input: null as unknown as ModelsInput
@@ -144,21 +144,21 @@ export interface Owners {
 	name: string;
 	email: string;
 	team: string;
-	organization_id: number;
+	org_id: number;
 }
 export interface OwnersInput {
 	id: number;
 	name: string;
 	email: string;
 	team: string;
-	organization_id: number;
+	org_id: number;
 }
 const owners = {
 	tableName: 'owners',
-	columns: ['id', 'name', 'email', 'team', 'organization_id'],
-	requiredForInsert: ['id', 'name', 'email', 'team', 'organization_id'],
+	columns: ['id', 'name', 'email', 'team', 'org_id'],
+	requiredForInsert: ['id', 'name', 'email', 'team', 'org_id'],
 	primaryKey: 'id',
-	foreignKeys: { organization_id: { table: 'organizations', column: 'id', $type: null as unknown as Organizations }, },
+	foreignKeys: { org_id: { table: 'organizations', column: 'id', $type: null as unknown as Organizations }, },
 	$type: null as unknown as Owners,
 	$input: null as unknown as OwnersInput
 } as const;
@@ -167,19 +167,19 @@ const owners = {
 export interface RiskCategories {
 	id: number;
 	name: string;
-	organization_id: number | null;
+	org_id: number | null;
 }
 export interface RiskCategoriesInput {
 	id: number;
 	name: string;
-	organization_id?: number | null;
+	org_id?: number | null;
 }
 const risk_categories = {
 	tableName: 'risk_categories',
-	columns: ['id', 'name', 'organization_id'],
+	columns: ['id', 'name', 'org_id'],
 	requiredForInsert: ['id', 'name'],
 	primaryKey: 'id',
-	foreignKeys: { organization_id: { table: 'organizations', column: 'id', $type: null as unknown as Organizations }, },
+	foreignKeys: { org_id: { table: 'organizations', column: 'id', $type: null as unknown as Organizations }, },
 	$type: null as unknown as RiskCategories,
 	$input: null as unknown as RiskCategoriesInput
 } as const;
