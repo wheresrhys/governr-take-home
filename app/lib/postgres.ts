@@ -76,7 +76,8 @@ export type CreateModelPayload = {
 
 export async function createModelWithRisks(
   modelPayload: CreateModelPayload,
-  orgId: number
+  orgId: number,
+  userId: number
 ): Promise<Models> {
   const client = await pool.connect();
 
@@ -96,6 +97,11 @@ export async function createModelWithRisks(
         [model.id, risk.riskCategoryId, risk.contextId, risk.severity]
       );
     }
+
+    await client.query(
+      `INSERT INTO audit_log (model_id, action, user_id) VALUES ($1, $2, $3)`,
+      [model.id, "CREATE", userId]
+    );
 
     await client.query("COMMIT");
     return model;

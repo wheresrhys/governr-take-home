@@ -51,10 +51,12 @@ let nextRiskRowId = 1;
 
 export function AddModelForm({
   orgId,
+  userId,
   riskCategoryOptions,
   contextOptions,
 }: {
   orgId: number;
+  userId: number;
   riskCategoryOptions: Option[];
   contextOptions: Option[];
 }) {
@@ -85,6 +87,7 @@ export function AddModelForm({
 
     const model = {
       orgId,
+      userId,
       name: modelName,
       risks: riskRows.map((row) => ({
         riskCategoryId: Number(row.riskCategoryId),

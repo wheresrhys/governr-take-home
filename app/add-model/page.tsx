@@ -3,6 +3,7 @@ import type { RiskCategories, Contexts } from "@/types/postgres.d.ts";
 import { AddModelForm } from "@/app/add-model/add-model-form";
 
 const ORG_ID = 1;
+const USER_ID = 1; // hardcoded until auth/user-selection exists
 
 async function getRiskDropdownOptions() {
   const [riskCategories, contexts] = await Promise.all([
@@ -29,6 +30,7 @@ export default async function AddModelPage() {
   return (
     <AddModelForm
       orgId={ORG_ID}
+      userId={USER_ID}
       riskCategoryOptions={riskCategoryOptions}
       contextOptions={contextOptions}
     />

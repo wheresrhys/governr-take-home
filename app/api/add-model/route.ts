@@ -3,10 +3,11 @@ import { createModelWithRisks, CreateModelPayload } from "@/app/lib/postgres";
 
 export async function POST(request: Request) {
   try {
-    const { orgId, ...modelPayload } = (await request.json()) as CreateModelPayload & {
+    const { orgId, userId, ...modelPayload } = (await request.json()) as CreateModelPayload & {
       orgId: number;
+      userId: number;
     };
-    const model = await createModelWithRisks(modelPayload, orgId);
+    const model = await createModelWithRisks(modelPayload, orgId, userId);
     console.log("Model created successfully", { model });
     return NextResponse.json({ modelId: model.id });
   } catch (error) {
