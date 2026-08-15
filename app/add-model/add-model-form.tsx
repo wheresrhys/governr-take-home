@@ -50,13 +50,9 @@ function Select({
 let nextRiskRowId = 1;
 
 export function AddModelForm({
-  orgId,
-  userId,
   riskCategoryOptions,
   contextOptions,
 }: {
-  orgId: number;
-  userId: number;
   riskCategoryOptions: Option[];
   contextOptions: Option[];
 }) {
@@ -86,8 +82,6 @@ export function AddModelForm({
     event.preventDefault();
 
     const model = {
-      orgId,
-      userId,
       name: modelName,
       risks: riskRows.map((row) => ({
         riskCategoryId: Number(row.riskCategoryId),
@@ -98,7 +92,10 @@ export function AddModelForm({
 
     const response = await fetch("/api/add-model", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        authorization: "Bearer stub-token",
+      },
       body: JSON.stringify(model),
     });
 
