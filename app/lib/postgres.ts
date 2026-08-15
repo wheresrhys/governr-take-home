@@ -1,5 +1,5 @@
 import { Pool, QueryResultRow } from "pg";
-import { risk_severity } from "@/types/postgres";
+import { risk_severity, Models } from "@/types/postgres";
 
 const DATABASE_URL =
   process.env.DATABASE_URL ||
@@ -54,7 +54,7 @@ export async function fetchModels(orgId: number): Promise<ModelRiskFlatRow[]> {
        contexts.name AS context_name,
        model_risks.severity AS severity
      FROM models
-     JOIN owners ON owners.id = models.owner_id
+     LEFT JOIN owners ON owners.id = models.owner_id
      LEFT JOIN model_risks ON model_risks.model_id = models.id
      LEFT JOIN risk_categories ON risk_categories.id = model_risks.risk_category_id
      LEFT JOIN contexts ON contexts.id = model_risks.context_id
@@ -63,4 +63,46 @@ export async function fetchModels(orgId: number): Promise<ModelRiskFlatRow[]> {
     [orgId]
   );
   return result.rows;
+}
+
+export type CreateModelPayload = {
+  name: string;
+  risks: {
+    riskCategoryId: number;
+    contextId: number;
+    severity: risk_severity;
+  }[];
+};
+
+export async function createModelWithRisks(
+  modelPayload: CreateModelPayload,
+  orgId: number
+): Promise<Models> {
+  const client = await pool.connect();
+
+  try {
+    await client.query("BEGIN");
+
+    const modelResult = await client.query<Models>(
+      `INSERT INTO models (name, org_id) VALUES ($1, $2) RETURNING *`,
+      [modelPayload.name, orgId]
+    );
+    const model = modelResult.rows[0];
+
+    for (const risk of modelPayload.risks) {
+      await client.query(
+        `INSERT INTO model_risks (model_id, risk_category_id, context_id, severity)
+         VALUES ($1, $2, $3, $4)`,
+        [model.id, risk.riskCategoryId, risk.contextId, risk.severity]
+      );
+    }
+
+    await client.query("COMMIT");
+    return model;
+  } catch (error) {
+    await client.query("ROLLBACK");
+    throw error;
+  } finally {
+    client.release();
+  }
 }
