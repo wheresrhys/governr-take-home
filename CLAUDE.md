@@ -33,3 +33,5 @@ TypeScript row types for every table are generated from the live schema (via `pg
 
 `scripts/seed-demo.ts` (`npm run db:seed-demo`) populates 2 demo organisations (each with 2 owners, 2 org-scoped risk categories, 2 org-scoped contexts, 4 models, 4 model risks per model) for manually exploring the app. Not wired into `predev`/`prestart` — run manually, optional. Skips an org if one with the same name already exists — safe to run repeatedly.
 
+`npm run db:rebuild` wipes the db clean: drops the `public` schema (`db/drop-schema.js`), then re-runs `db:migrate`, `db:seed-global`, `db:seed-demo` in order. Destructive — local dev reset only.
+
