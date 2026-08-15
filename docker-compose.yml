@@ -30,6 +30,7 @@ services:
       - /app/.next
     environment:
       DATABASE_URL: postgresql://postgres:postgres@db:5432/governr
+      RISK_SCORING_SERVICE_URL: http://risk-scoring:4000
 
   risk-scoring:
     build:
