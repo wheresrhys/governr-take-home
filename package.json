@@ -11,6 +11,7 @@
     "lint": "eslint",
     "db:migrate": "node db/apply-schema.js",
     "db:seed-global": "tsx scripts/populate-categories.ts",
+    "db:seed-demo": "tsx scripts/seed-demo.ts",
     "db:typegen": "pg-to-ts generate -c \"${DATABASE_URL:-postgresql://postgres:postgres@localhost:5433/governr}\" -o types/postgres.d.ts"
   },
   "dependencies": {

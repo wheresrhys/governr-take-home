@@ -31,3 +31,5 @@ Every `_id` foreign key column is `NOT NULL` + indexed + constrained, except `ri
 
 TypeScript row types for every table are generated from the live schema (via `pg-to-ts`) into `types/postgres.d.ts`. Unlike `db:migrate`/`db:seed-global`, this is **not** wired into `predev`/`prestart` — the generated file is committed to git, so run `npm run db:typegen` manually against a running db whenever `db/schema/` changes and commit the diff.
 
+`scripts/seed-demo.ts` (`npm run db:seed-demo`) populates 2 demo organisations (each with 2 owners, 2 org-scoped risk categories, 2 org-scoped contexts, 4 models, 4 model risks per model) for manually exploring the app. Not wired into `predev`/`prestart` — run manually, optional. Skips an org if one with the same name already exists — safe to run repeatedly.
+
