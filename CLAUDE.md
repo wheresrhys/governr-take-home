@@ -17,6 +17,8 @@ Small multi-service app, orchestrated locally via `docker-compose.yml`:
 
 Services reach the db over the compose network at `db:5432` (see `DATABASE_URL` in `docker-compose.yml`), not the published host port.
 
+**Gotcha:** each service mounts an anonymous `/app/node_modules` volume to stop the source bind mount shadowing it. Compose carries that volume's *data* over when a container is recreated instead of resetting it from the freshly-built image — so after adding/updating a dependency, a plain `docker compose up --build` can still run against the old `node_modules` and fail with a module-not-found error. Run `docker compose up --build -V` (`--renew-anon-volumes`) instead to force it to pick up the new install. Don't use `docker compose down -v` for this — it also wipes the named `db-data` volume (the local Postgres data).
+
 ### Adding a new service
 
 Copy the `services/risk-scoring` pattern: own `package.json`/`tsconfig.json`/`Dockerfile`, then add a service block to `docker-compose.yml` (bind mount + anonymous `node_modules` volume, per existing services).
