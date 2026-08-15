@@ -2,7 +2,7 @@
 CREATE TABLE IF NOT EXISTS models (
   id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   name TEXT NOT NULL,
-  owner_id INTEGER NOT NULL REFERENCES owners (id),
+  owner_id INTEGER REFERENCES owners (id),
   org_id INTEGER NOT NULL REFERENCES organizations (id)
 );
 
