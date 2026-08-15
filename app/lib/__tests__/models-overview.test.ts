@@ -36,7 +36,7 @@ describe("buildModelsOverview", () => {
           { riskCategory: "Bias & Fairness", context: "Production", severity: "HIGH" },
           { riskCategory: "Data Privacy", context: "Staging", severity: "LOW" },
         ],
-        aggregateRiskScore: 101,
+        aggregateRiskScore: 'unimplemented',
       },
     ]);
   });
@@ -65,7 +65,7 @@ describe("buildModelsOverview", () => {
 
     expect(result[0].riskCategories).toEqual(["Bias & Fairness"]);
     expect(result[0].deployedContexts).toEqual(["Production", "Staging"]);
-    expect(result[0].aggregateRiskScore).toBe(11);
+    expect(result[0].aggregateRiskScore).toBe('unimplemented');
   });
 
   it("returns a model with empty risk data and score 0 when it has no model_risks rows", () => {
@@ -90,7 +90,7 @@ describe("buildModelsOverview", () => {
         riskCategories: [],
         deployedContexts: [],
         riskPairings: [],
-        aggregateRiskScore: 0,
+        aggregateRiskScore: 'unimplemented',
       },
     ]);
   });

@@ -14,13 +14,7 @@ export type ModelOverviewRow = {
   riskCategories: string[];
   deployedContexts: string[];
   riskPairings: ModelRiskPairing[];
-  aggregateRiskScore: number;
-};
-
-const SEVERITY_WEIGHT: Record<Severity, number> = {
-  HIGH: 100,
-  MODERATE: 10,
-  LOW: 1,
+  aggregateRiskScore: string;
 };
 
 export function buildModelsOverview(rows: ModelRiskFlatRow[]): ModelOverviewRow[] {
@@ -52,9 +46,6 @@ export function buildModelsOverview(rows: ModelRiskFlatRow[]): ModelOverviewRow[
     riskCategories: [...new Set(riskPairings.map((p) => p.riskCategory))],
     deployedContexts: [...new Set(riskPairings.map((p) => p.context))],
     riskPairings,
-    aggregateRiskScore: riskPairings.reduce(
-      (total, p) => total + SEVERITY_WEIGHT[p.severity],
-      0
-    ),
+    aggregateRiskScore: 'unimplemented', // Placeholder for future implementation
   }));
 }

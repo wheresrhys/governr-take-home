@@ -79,9 +79,9 @@ describe("POST /assess-risk", () => {
   it("returns aggregateRiskScore summing 100 per high, 10 per moderate, 1 per low risk", async () => {
     const response = await request(app)
       .post("/assess-risk")
-      .set("Authorization", "Bearer test-token")
+      .set("x-api-key", "test-key")
       .send({
-        model: { id: 1, name: "test-model" },
+        ...validPayload,
         risks: [
           { risk_category: "Bias", context: "Production", severity: "HIGH" },
           { risk_category: "Bias", context: "Production", severity: "MODERATE" },
