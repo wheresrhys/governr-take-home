@@ -2,6 +2,7 @@ import Ajv, { JSONSchemaType } from "ajv";
 import type { risk_severity } from "../../../types/postgres.d.ts";
 
 export interface AssessRiskPayload {
+  org_id: number;
   model: {
     id: number;
     name: string;
@@ -21,6 +22,7 @@ export interface AssessRiskPayload {
 const assessRiskSchema: JSONSchemaType<AssessRiskPayload> = {
   type: "object",
   properties: {
+    org_id: { type: "number" },
     model: {
       type: "object",
       properties: {
@@ -44,7 +46,7 @@ const assessRiskSchema: JSONSchemaType<AssessRiskPayload> = {
       },
     },
   },
-  required: ["model", "risks"],
+  required: ["org_id", "model", "risks"],
   additionalProperties: false,
 };
 
