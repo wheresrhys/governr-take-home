@@ -39,6 +39,23 @@ Edit `app/page.tsx` or `services/risk-scoring/index.ts` and the running containe
 npm run db:migrate
 ```
 
+Example queries:
+```SQL
+-- Models with a HIGH severity risk in the "Hiring" context
+SELECT DISTINCT m.id, m.name
+FROM models m
+  JOIN model_risks mr ON mr.model_id = m.id
+  JOIN contexts c ON c.id = mr.context_id
+WHERE c.name = 'Internal Tools'
+  AND mr.severity = 'HIGH';
+
+-- Owners belonging to organisation id 2
+SELECT id, name, email, team
+FROM owners
+WHERE org_id = 2;
+
+```
+
 #### Demo data
 
 After `docker compose up`, if you want some sample organisations to explore the app with, run:
